@@ -1,88 +1,67 @@
 package Solution;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 class Solution {
- 
-    public static boolean isHappy(int n) {
-		
-		    double result = 0;
-	        String s = Integer.toString(n);
-	        String _s[];
-	        int[] number = new int[10];
-	        double sum = 0;
-	        int k=n;
-	        int count=0;
-	        
+    public int findMaxConsecutiveOnes(int[] nums) {
         
-	         while( count != 10 ) { 
-	    	  
-	    	  s=Integer.toString(k);
-	      
-	    	 _s = s.split("");
-	        
-	      
-	        for(int i=0;i<s.length();i++) { 
-	        	_s[i] = _s[i].trim();
-	        	
-	        	number[i] =Integer.parseInt(_s[i]);
-	        	
-	     
-	        }
-    
-	        sum=0;
+        int count=0;  
+        ArrayList<Integer> numbers = new ArrayList<>();
        
-	     
-	        for(int j=0;j<s.length();j++) {
-	        	result = Math.pow(number[j],2);
-	        	sum += result; 
-	        }
-
-	        k=0;
-	        k = (int) sum; 
-	        System.out.print(" "+k+" ");
-	     
-	        count++;
-	        
-	       
-	      }
-
-	        
-	        if( k == 1 ) {
-	        	
-	        	return true;
-	        	
-	        }
-	        
-	        else{
-	        	return false;
-	        	
-	        } 	
-	 
-	        
-	            
-	       
-     }
-	        	
-
+        
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i]==1) {
+               count++;
+            }
+            else{
+                numbers.add(count);
+                count=0;
+            }
+            
+        }
+        
+        numbers.add(count);
+        int max=numbers.get(0);
+        
+        for(int i=1;i<numbers.size();i++){
+            if(numbers.get(i)>max){
+                max = numbers.get(i);
+            }
+            else {
+            
+            }
+        }  
+        return max;
+    }
+    	
 }
-
 public class MainClass {
-    public static String booleanToString(boolean input) {
-        return input ? "True" : "False";
+    public static int[] stringToIntegerArray(String input) {
+        input = input.trim();
+        input = input.substring(1, input.length() - 1);
+        if (input.length() == 0) {
+          return new int[0];
+        }
+    
+        String[] parts = input.split(",");
+        int[] output = new int[parts.length];
+        for(int index = 0; index < parts.length; index++) {
+            String part = parts[index].trim();
+            output[index] = Integer.parseInt(part);
+        }
+        return output;
     }
     
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            int n = Integer.parseInt(line);
+            int[] nums = stringToIntegerArray(line);
             
-            boolean ret = new Solution().isHappy(n);
+            int ret = new Solution().findMaxConsecutiveOnes(nums);
             
-            String out = booleanToString(ret);
+            String out = String.valueOf(ret);
             
             System.out.print(out);
         }
