@@ -4,78 +4,95 @@ import java.io.*;
 import java.util.*;
 
 class Solution {
-	    public List<Integer> selfDividingNumbers(int left, int right) {
-	        
-	    	//left와 right범위 
-	    	ArrayList<Integer> list = new ArrayList<Integer>();
+	public boolean isPalindrome(int x) {
 	    
-	        int num;
-	        int count=0;
-	        String number;
-	        String[] listnumber;
-	        int index = left;
-	   
-	       
-	        for(int j=0;j<=right-left;j++) {
-	        	number = Integer.toString(index);
-	        	listnumber = number.split("");
-	        	
-	        	for(int i=0;i<listnumber.length;i++) {
-	        		num = Integer.parseInt(listnumber[i]);
-	        		
-	        		if(!number.contains("0") &&index%num==0) {
-	        		 
-	        			count++;
-	        			
-	        			if(count == listnumber.length) {
-	        				list.add(index);
-	        			
-	        			}
-	        		
-	        		}
-	        		
-	        	}
-	        	count=0;
-	        	index++;
-	        }
-	        
-	        
-	        
-	        
-	        return list;
-	    }
-	   
+		int count=1;
+		ArrayList<Integer> listone = new ArrayList<Integer>();
+		ArrayList<Integer> listtwo = new ArrayList<Integer>();
+		String token = Integer.toString(x);
+		String[] tokenlist = token.split("");
+		
+		
+		
+		if(x<0) {
+			return false;
+		}
+		if(x<=9) {
+			return true;
+		}
+		
+		else {
+			
+				for(int k=1;k<tokenlist.length;k++) {
+					if(tokenlist[k].equals(tokenlist[k-1]))
+					count++;
+				}
+				if(count==tokenlist.length) { //숫자가 전부 동일할 경우
+					return true;
+				}
+				else{ //숫자가 전부 동일하지 않을 경우
+					count=0;
+					for(int k=1;k<tokenlist.length-1;k++) {
+						count++; 
+					}
+					if(tokenlist[0].equals(tokenlist[tokenlist.length-1])&&count==1) { // 양 끝에 숫자는 같고 가운데 숫자가 하나일 경우
+						return true;
+					}
+					count=1;
+					for(int k=1;k<tokenlist.length-1;k++) {
+					if(k+1!=tokenlist.length&&tokenlist[k].equals(tokenlist[k+1])) {
+							count++;
+					}
+					}
+					if(tokenlist[0].equals(tokenlist[tokenlist.length-1])&&count==tokenlist.length-2) {
+						//첫 번째와 끝의 숫자가 동일하면서 안에 숫자가 전부 동일
+						return true;
+					}
+					else {
+						for(int j=0;j<tokenlist.length/2;j++) {
+							int sum = Integer.parseInt(tokenlist[j]);
+							listone.add(sum);
+						}
+						for(int j=tokenlist.length-1;j>=tokenlist.length/2;j--) {
+							int sum = Integer.parseInt(tokenlist[j]);
+							listtwo.add(sum);
+						}
+						count=0;
+						for(int j=0;j<listone.size();j++) {
+							if(listone.get(j).equals(listtwo.get(j))) {
+								count++;
+							}
+						}
+						if(tokenlist[0].equals(tokenlist[tokenlist.length-1])&&count==listone.size()) {
+							return true;
+						}
+						
+						return false;
+					}
+				}
+				
+			}
+		
+	    
 	}
+	
+}
+
 
 	public class MainClass {
-	    public static String integerArrayListToString(List<Integer> nums, int length) {
-	        if (length == 0) {
-	            return "[]";
-	        }
-	    
-	        String result = "";
-	        for(int index = 0; index < length; index++) {
-	            Integer number = nums.get(index);
-	            result += Integer.toString(number) + ", ";
-	        }
-	        return "[" + result.substring(0, result.length() - 2) + "]";
-	    }
-	    
-	    public static String integerArrayListToString(List<Integer> nums) {
-	        return integerArrayListToString(nums, nums.size());
+	    public static String booleanToString(boolean input) {
+	        return input ? "True" : "False";
 	    }
 	    
 	    public static void main(String[] args) throws IOException {
 	        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	        String line;
 	        while ((line = in.readLine()) != null) {
-	            int left = Integer.parseInt(line);
-	            line = in.readLine();
-	            int right = Integer.parseInt(line);
+	            int x = Integer.parseInt(line);
 	            
-	            List<Integer> ret = new Solution().selfDividingNumbers(left, right);
+	            boolean ret = new Solution().isPalindrome(x);
 	            
-	            String out = integerArrayListToString(ret);
+	            String out = booleanToString(ret);
 	            
 	            System.out.print(out);
 	        }
